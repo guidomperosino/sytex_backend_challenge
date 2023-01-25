@@ -14,6 +14,7 @@ During and after the work is done, informations must be gathered, to make sure t
 
 Forms are based on a template. The template is the set of questions (form entries) that will need to be answered in the field. For example, the questions asked to the worker repairing a solar panel would be very different that for the worker installing a brand new 5G cell.
 
+### Objectives
 We will provide mocked example of a couple of templates. The coding challenge consists in APIs that will allow the clients to:
 
 - Create a new form instance, based on a given template
@@ -41,7 +42,12 @@ Their `input_type` represents the action the user needs to do to answer ("fill")
 
 ## What we expect
 
-You can go for whatever you think it's the best solution for this assignment, both code and API design! We'll check for these things in order of importance:
+You can go for whatever you think it's the best solution for this assignment, both code and API design! Just a couple of pointers:
+
+- Use python as the main programming language, but any style, framework, coding tooling you feel comfortable with.
+- Use any data persistence (memory included) as long as the objectives are met.
+
+We'll check for these things in order of importance:
 
 - API developer consumer experience.
 - Whether the solution embraces standard software development patterns and practices. 

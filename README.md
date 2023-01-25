@@ -10,16 +10,19 @@ In this coding challange, we will provide you with a real (albeit very diluted) 
 
 In Sytex, a Form (think Google Forms) is used to gather information in the field. Our users would go to (sometimes *very*) remote locations to do some type of installation, improvements, upgrades or maintenance in the field. You can picture someone driving to the middle of the Atacama desert to repair a solar panel, or to a Brazilian *morro* in Rio to install a new 5G cell.
 
-During and after the work is done, informations must be gathered, to make sure the job was done correctly, and to inform the rest of the organization about the status and results.
+During and after the work is done, data must be gathered to make sure the job was done correctly, and to inform the rest of the organization about the status and results.
 
-Forms are based on a template. The template is the set of questions (form entries) that will need to be answered in the field. For example, the questions asked to the worker repairing a solar panel would be very different that for the worker installing a brand new 5G cell.
+Forms are based on a template. The template is the set of questions (form entries) that will need to be answered in the field. For example, the questions for the worker repairing a solar panel would be very different that for the worker installing a brand new 5G cell.
+
+Entries are grouped, so that the form can be presented in a way that makes sense to the end user. For example, the form for the worker repairing a solar panel would have a group for the "General Information", and another group for the "Solar Panel Information". The form for the worker installing a brand new 5G cell would have a group for the "General Information", and another group for the "5G Cell Information".
 
 ### Objectives
 We will provide mocked example of a couple of templates. The coding challenge consists in APIs that will allow the clients to:
 
-- Create a new form instance, based on a given template
+- Create a new form instance, based on a given template. A new form must ask for a mandatory coordinates field.
 - Be able to answer a question with appropriate validations and sanitizations
 - Get a form instance with both questions and answers included
+- Package the project in a way that is easy to execute, test, and eventually deploy to a cloud provider.
 
 A `FormTemplate` contains a set of entries and groups. Each `Entry` has some metadata, and an `input_type`.
 

@@ -4,7 +4,7 @@ This repository holds a coding challenge for devs applying for backend jobs @ [S
 
 ## Context
 
-In this coding challange, we will provide you with a real (albeit very diluted) business use case. The objective is that you provide a set of API for a front-end client to consume.
+In this coding challenge, we will provide you with a real (albeit very diluted) business use case. The objective is that you provide a set of API for a front-end client to consume.
 
 ## The challenge!
 

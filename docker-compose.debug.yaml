@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    volumes:
+      - "./:/app"
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload"]
+    ports:
+      - 5000:5000
+      - 5678:5678
+    depends_on: 
+      - mysql
+    env_file:
+      - .env
+    networks:
+      sytex-backend:
+        aliases:
+          - mysql
+  mysql:
+    image: mysql:latest
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    volumes: 
+      - mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: db
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: secret
+      MYSQL_HOST: mysql
+    networks:
+      sytex-backend:
+        aliases:
+          - mysql
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    networks:
+      sytex-backend:
+        aliases:
+          - mysql
+volumes:
+  mysql:
+networks:
+  sytex-backend:
+    name: sytex-backend-network

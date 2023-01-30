@@ -54,9 +54,38 @@ class FormTemplate(BaseModel):
     content : list[Union[Group,TextInputEntry,OptionsEntry,YesNoEntry]] = Field(...)
     # coordinates: Tuple[float, float] = Field(...)
 
+
 class FormTemplateDB(FormTemplate):
     id: str
     created_at: datetime
     content : list
     class Config:
         orm_mode = True
+
+
+class EntryOptionOut(BaseModel):
+    id: str
+    label: str
+    value: str
+    is_active: bool
+    created_at: datetime
+
+
+class FormItemOut(BaseModel):
+    id: str
+    index: str
+    type: str
+    name: Optional[str]
+    label: Optional[str]
+    input_type: Optional[int]
+    is_active: bool
+    created_at: datetime
+    options: list[EntryOptionOut]
+
+class FormTemplateOut(BaseModel):
+    id: str
+    name: str
+    description: str
+    is_active: bool
+    created_at: datetime
+    content: list[FormItemOut]

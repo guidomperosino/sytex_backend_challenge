@@ -1,16 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from app.database.db import Base
-from uuid import uuid4
-from datetime import datetime
-
-def generate_id():
-    return str(uuid4())
-
-
-def generate_datetime():
-    return str(datetime.now())
-
+from app.utils import generate_datetime, generate_id
  
 class FormTemplate(Base):
     __tablename__ = "form_templates"
@@ -21,6 +12,7 @@ class FormTemplate(Base):
     created_at = Column(DateTime, default=generate_datetime)
 
     content = relationship("FormItem")
+
 
 class FormItem(Base):
     __tablename__ = "form_items"
@@ -35,6 +27,7 @@ class FormItem(Base):
     created_at = Column(DateTime, default=generate_datetime)
 
     options = relationship("EntryOption")
+
 
 class EntryOption(Base):
     __tablename__ = "entry_options"

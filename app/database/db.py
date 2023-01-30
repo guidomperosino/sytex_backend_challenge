@@ -13,6 +13,6 @@ SQLALCHEMY_DATABASE_URL = f'mysql+pymysql://{getenv("MYSQL_USER")}:{getenv("MYSQ
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 
 Base = declarative_base()

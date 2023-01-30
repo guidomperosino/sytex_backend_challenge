@@ -1,5 +1,5 @@
-from typing import Optional, Tuple
-from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, Tuple, Union
+from pydantic import BaseModel, Field, validator
 from datetime import datetime
 
 class Options(BaseModel):
@@ -19,16 +19,44 @@ class Group(BaseItem):
 
 class OptionsEntry(Entry):
     options: list[Options] = Field(...)
+    
+    @validator("input_type")
+    def type_validation(cls, input_type):
+        if input_type != 2:
+            raise ValueError("Not an Options Entry")
+        return input_type
+    
+    @validator("options")
+    def options_validation(cls, options):
+        if len(options) < 2:
+            raise ValueError("Required at least 2 options")
+        return options
 
 class TextInputEntry(Entry):
-    pass
+    
+    @validator("input_type")
+    def type_validation(cls, input_type):
+        if input_type != 1:
+            raise ValueError("Not a Text Input Entry")
+        return input_type
 
 class YesNoEntry(Entry):
-    pass
+    
+    @validator("input_type")
+    def type_validation(cls, input_type):
+        if input_type != 3:
+            raise ValueError("Not a Yes/No Entry")
+        return input_type
 
-class Form(BaseModel):
+class FormTemplate(BaseModel):
     name: str = Field(...)
     description: str =  Field (...)
-    created_at : datetime = Field(...)
-    content : list[BaseItem] = Field(...)
-    coordinates: Tuple[float, float] = Field(...)
+    content : list[Union[Group,TextInputEntry,OptionsEntry,YesNoEntry]] = Field(...)
+    # coordinates: Tuple[float, float] = Field(...)
+
+class FormTemplateDB(FormTemplate):
+    id: str
+    created_at: datetime
+    content : list
+    class Config:
+        orm_mode = True

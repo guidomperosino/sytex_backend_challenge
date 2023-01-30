@@ -1,0 +1,24 @@
+{
+    "name": "Installation form",
+    "description": "This is a mocked form for Sytex s coding challenge",
+    "content": [
+        {"index": "1", "type": "group", "name": "General information"},
+        {"index": "1.1", "type": "entry", "input_type": 1, "label": "Site name"},
+        {
+            "index": "1.2",
+            "type": "entry",
+            "input_type": 2,
+            "label": "Type of site",
+            "options": [
+                {"label": "Green field", "value": "greenfield"},
+                {"label": "Roof top", "value": "rooftop"}
+            ]
+        },
+        {
+            "index": "1.3",
+            "type": "entry",
+            "input_type": 3,
+            "label": "Is the site in a good condition?"
+        }
+    ]
+}

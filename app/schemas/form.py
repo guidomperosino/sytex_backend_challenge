@@ -70,22 +70,60 @@ class EntryOptionOut(BaseModel):
     is_active: bool
     created_at: datetime
 
-
-class FormItemOut(BaseModel):
+class FormGroupOut(BaseModel):
     id: str
     index: str
     type: str
-    name: Optional[str]
-    label: Optional[str]
-    input_type: Optional[int]
+    name: str
+    is_active: bool
+    created_at: datetime
+
+class FormOptionsEntryOut(BaseModel):
+    id: str
+    index: str
+    type: str
+    label: str
+    input_type: int
     is_active: bool
     created_at: datetime
     options: list[EntryOptionOut]
 
+class FormTextEntryOut(BaseModel):
+    id: str
+    index: str
+    type: str
+    label: str
+    input_type: int
+    is_active: bool
+    created_at: datetime
+
+class FormYesNoEntryOut(BaseModel):
+    id: str
+    index: str
+    type: str
+    label: str
+    input_type: int
+    is_active: bool
+    created_at: datetime
 class FormTemplateOut(BaseModel):
     id: str
     name: str
     description: str
     is_active: bool
     created_at: datetime
-    content: list[FormItemOut]
+    content: list[Union[FormGroupOut,FormOptionsEntryOut,FormTextEntryOut,FormYesNoEntryOut]]
+
+class FormAnswer(BaseModel):
+    form_item_id:str
+    answer: Union[str,int, bool]
+
+class FormInstance(BaseModel):
+    form_template_id : str
+    coordinates: Tuple[float, float]
+    answers : list[FormAnswer]
+    
+    @validator("coordinates")
+    def validate_coordinates(cls, coordinates):
+        if not (-90 <= coordinates[0] <= 90) or not (-180 <= coordinates[1] <= 180):
+            raise ValueError("Coordinates are out of range")
+        return coordinates

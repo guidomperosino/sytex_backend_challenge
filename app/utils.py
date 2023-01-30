@@ -69,18 +69,49 @@ def to_form_template_out(form_template):
     )
 
 def to_form_item_out(form_item):
-    options = [to_entry_option_out(option) for option in form_item.options]
-    return schemas.FormItemOut(
-        id=form_item.id,
-        index=form_item.index,
-        type=form_item.type,
-        name=form_item.name,
-        label=form_item.label,
-        input_type=form_item.input_type,
-        is_active=form_item.is_active,
-        created_at=form_item.created_at,
-        options=options
-    )
+    if form_item.type == "group":
+        return schemas.FormGroupOut(
+            id=form_item.id,
+            index=form_item.index,
+            type=form_item.type,
+            name=form_item.name,
+            is_active=form_item.is_active,
+            created_at=form_item.created_at,
+        )
+    else:
+        if form_item.input_type == 2:
+            options = [to_entry_option_out(option) for option in form_item.options]
+            return schemas.FormOptionsEntryOut(
+                id=form_item.id,
+                index=form_item.index,
+                type=form_item.type,
+                label=form_item.label,
+                input_type=form_item.input_type,
+                is_active=form_item.is_active,
+                created_at=form_item.created_at,
+                options=options
+            )
+        elif form_item.input_type == 1:
+            return schemas.FormTextEntryOut(
+                id=form_item.id,
+                index=form_item.index,
+                type=form_item.type,
+                label=form_item.label,
+                input_type=form_item.input_type,
+                is_active=form_item.is_active,
+                created_at=form_item.created_at,
+            )
+        elif form_item.input_type == 3:
+            return schemas.FormYesNoEntryOut(
+                id=form_item.id,
+                index=form_item.index,
+                type=form_item.type,
+                label=form_item.label,
+                input_type=form_item.input_type,
+                is_active=form_item.is_active,
+                created_at=form_item.created_at,
+            )
+
 
 def to_entry_option_out(entry_option):
     return schemas.EntryOptionOut(

@@ -60,6 +60,7 @@ def create_form_instance(db: Session, form_instance: schemas.FormInstance):
     db_form_instance.coordinates = str(db_form_instance.coordinates)
 
     db.add(db_form_instance)
+    db.commit()
     for answer in form_instance.answers:
         db_answer = models.FormResponse(**answer.dict(),form_instance_id=db_form_instance.id)
         db.add(db_answer)

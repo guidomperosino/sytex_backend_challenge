@@ -71,7 +71,7 @@ def create(
                         if not isinstance(answer.answer,str):
                             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Answers input does not Match with Text input format")
                     elif item.input_type == 2:
-                        if not isinstance(answer.answer,str) and answer.answer in [option.value for option in item.options]:
+                        if not isinstance(answer.answer,str) or answer.answer not in [option.value for option in item.options]:
                             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Answers input does not Match with Option input format")
                     elif item.input_type ==3:
                         if not isinstance(bool(answer.answer),bool):

@@ -57,6 +57,17 @@ def normalize_filename(filename):
 
     return object_name
 
+def to_form_instance_out(form_instance):
+    form_template = to_form_template_out(form_instance.form_template)
+    return schemas.FormInstanceOut(
+        id=form_instance.id,
+        form_template_id=form_instance.form_template_id,
+        coordinates=form_instance.coordinates,
+        answers=form_instance.answers,
+        form_template=form_template
+    )
+
+
 def to_form_template_out(form_template):
     content = [to_form_item_out(item) for item in form_template.content]
     return schemas.FormTemplateOut(

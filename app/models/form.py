@@ -52,8 +52,9 @@ class FormInstance(Base):
     coordinates = Column(String(50))
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=generate_datetime)
-
-    form = relationship("FormTemplate")
+    
+    answers = relationship("FormResponse")
+    form_template = relationship("FormTemplate")
 
 class FormResponse(Base):
     __tablename__ = "form_responses"
@@ -62,4 +63,6 @@ class FormResponse(Base):
     form_instance_id = Column(String(36), ForeignKey("form_instances.id"))
     form_item_id = Column(String(36), ForeignKey("form_items.id"))
     answer = Column(String(250))
+    
+    form_instance = relationship("FormInstance", back_populates="answers")
     questions = relationship("FormItem", back_populates="form_responses")

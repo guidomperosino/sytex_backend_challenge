@@ -127,3 +127,10 @@ class FormInstance(BaseModel):
         if not (-90 <= coordinates[0] <= 90) or not (-180 <= coordinates[1] <= 180):
             raise ValueError("Coordinates are out of range")
         return coordinates
+
+class FormInstanceOut(BaseModel):
+    id: str
+    form_template_id: str
+    coordinates: str
+    form_template: FormTemplateOut
+    answers: list

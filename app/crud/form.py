@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.schemas import form as schemas
 from app.models import form as models
-from app.utils import to_form_template_out
+from app.utils import to_form_template_out, to_form_instance_out
 
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -31,9 +31,8 @@ def create_form_template(db: Session, form_template: schemas.FormTemplate):
     return db_form_template
 
 # Return Form Template from DB (based on id).
-def get_form_template(db: Session, form_template_id: str): 
+def get_form_template_by_id(db: Session, form_template_id: str): 
     form_template = db.query(models.FormTemplate).filter(models.FormTemplate.id == form_template_id).first()
-
     return to_form_template_out(form_template)
 
 # Return Form Template List from DB (filtered case insensitive).
@@ -67,3 +66,9 @@ def create_form_instance(db: Session, form_instance: schemas.FormInstance):
     db.commit()
     db.refresh(db_form_instance)
     return db_form_instance
+
+# Return Form Template List from DB (filtered case insensitive).
+def get_form_instances(db: Session, skip=0, limit=100):
+    query = db.query(models.FormInstance)
+    # return query.offset(skip).limit(limit).all()
+    return [to_form_instance_out(form_instance) for form_instance in query.offset(skip).limit(limit).all()]

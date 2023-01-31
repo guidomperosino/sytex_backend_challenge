@@ -10,7 +10,7 @@ import logging
 router = APIRouter()
 
 @router.post("", response_model=schemas.FormTemplateDB, status_code=status.HTTP_201_CREATED)
-def create(
+def create_template(
     form_in : schemas.FormTemplate,
     db: Session = Depends(deps.get_db),
 ):
@@ -18,11 +18,11 @@ def create(
 
 
 @router.get("/{form_template_id}", response_model=schemas.FormTemplateOut)
-def get_by_id(
+def get_by_template_id(
     form_template_id: str, 
     db: Session = Depends(deps.get_db),
 ):
-    db_form_template = crud.get_form_template(db, form_template_id= form_template_id)
+    db_form_template = crud.get_form_template_by_id(db, form_template_id= form_template_id)
     
     if db_form_template is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Form Template not found")
@@ -31,7 +31,7 @@ def get_by_id(
 
 
 @router.get("", response_model=list[schemas.FormTemplateOut])
-def get_all(
+def get_all_templates(
     skip: int = 0, 
     limit: int = 100,
     name: Optional[str] = None,
@@ -48,7 +48,7 @@ def get_all(
 
 
 @router.post("/submit", status_code=status.HTTP_201_CREATED)
-def create(
+def create_form_instance(
     form_instance : schemas.FormInstance,
     db: Session = Depends(deps.get_db),
 ):
@@ -70,11 +70,25 @@ def create(
                     if item.input_type == 1:
                         if not isinstance(answer.answer,str):
                             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Answers input does not Match with Text input format")
+                        continue
                     elif item.input_type == 2:
                         if not isinstance(answer.answer,str) or answer.answer not in [option.value for option in item.options]:
                             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Answers input does not Match with Option input format")
+                        continue
                     elif item.input_type ==3:
                         if not isinstance(bool(answer.answer),bool):
                             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Answers input does not Match with Yes/NO input format")
-
+                        continue
     return crud.create_form_instance(db=db, form_instance=form_instance)
+
+@router.get("/instances")
+def get_all_form_instances(
+    skip: int = 0, 
+    limit: int = 100,
+    db: Session = Depends(deps.get_db),
+):
+    return crud.get_form_instances(
+        db=db, 
+        skip=skip, 
+        limit=limit
+    )

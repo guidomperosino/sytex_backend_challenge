@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Union
 from pydantic import BaseModel, Field, validator
 from datetime import datetime
 
-class Options(BaseModel):
+class Option(BaseModel):
     label: str = Field(...)
     value: str =  Field (...)
 
@@ -17,31 +17,38 @@ class Entry(BaseItem):
 class Group(BaseItem):
     name:str = Field(...)
 
-class OptionsEntry(Entry):
-    options: list[Options] = Field(...)
-    
-    @validator("input_type")
-    def type_validation(cls, input_type):
-        if input_type != 2:
-            raise ValueError("Not an Options Entry")
-        return input_type
-    
-    @validator("options")
-    def options_validation(cls, options):
-        if len(options) < 2:
-            raise ValueError("Required at least 2 options")
-        return options
 
 class TextInputEntry(Entry):
     
+    # Validate input_type = 1 => TexttEntry.
     @validator("input_type")
     def type_validation(cls, input_type):
         if input_type != 1:
             raise ValueError("Not a Text Input Entry")
         return input_type
 
-class YesNoEntry(Entry):
+
+class OptionsEntry(Entry):
+    options: list[Option] = Field(...)
     
+    # Validate input_type = 2 => OptionsEntry.
+    @validator("input_type")
+    def type_validation(cls, input_type):
+        if input_type != 2:
+            raise ValueError("Not an Options Entry")
+        return input_type
+    
+    # Validate OptionsEntry with at least 2 options.
+    @validator("options")
+    def options_validation(cls, options):
+        if len(options) < 2:
+            raise ValueError("Required at least 2 options")
+        return options
+
+
+class YesNoEntry(Entry):
+
+    # Validate input_type = 3 => YES/NO Entry.    
     @validator("input_type")
     def type_validation(cls, input_type):
         if input_type != 3:
@@ -52,7 +59,6 @@ class FormTemplate(BaseModel):
     name: str = Field(...)
     description: str =  Field (...)
     content : list[Union[Group,TextInputEntry,OptionsEntry,YesNoEntry]] = Field(...)
-    # coordinates: Tuple[float, float] = Field(...)
 
 
 class FormTemplateDB(FormTemplate):
@@ -63,7 +69,7 @@ class FormTemplateDB(FormTemplate):
         orm_mode = True
 
 
-class EntryOptionOut(BaseModel):
+class OptionOut(BaseModel):
     id: str
     label: str
     value: str
@@ -86,7 +92,7 @@ class FormOptionsEntryOut(BaseModel):
     input_type: int
     is_active: bool
     created_at: datetime
-    options: list[EntryOptionOut]
+    options: list[OptionOut]
 
 class FormTextEntryOut(BaseModel):
     id: str

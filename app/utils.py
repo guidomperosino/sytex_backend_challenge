@@ -24,30 +24,6 @@ def generate_id():
 def generate_datetime():
     return str(datetime.now())
 
-# HASH PASSWORD
-# password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-# def create_access_token(subject: Union[str, Any], expires_delta: timedelta = None):
-#     if expires_delta:
-#         expire = datetime.utcnow() + expires_delta
-#     else:
-#         expire = datetime.utcnow() + timedelta(
-#             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-#         )
-#     to_encode = {"exp": expire, "sub": str(subject)}
-#     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
-    
-#     return encoded_jwt
-
-
-# def get_hashed_password(password: str):
-#     return password_context.hash(password)
-
-
-# def verify_password(password: str, hashed_pass: str):
-#     return password_context.verify(password, hashed_pass)
-
 
 def normalize_filename(filename):
     name, file_ext = os.path.splitext(filename)
@@ -125,7 +101,7 @@ def to_form_item_out(form_item):
 
 
 def to_entry_option_out(entry_option):
-    return schemas.EntryOptionOut(
+    return schemas.OptionOut(
         id=entry_option.id,
         label=entry_option.label,
         value=entry_option.value,

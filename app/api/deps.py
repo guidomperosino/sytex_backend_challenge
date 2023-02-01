@@ -1,7 +1,5 @@
 from typing import Generator
 
-
-from app.core.config import settings
 from app.database.db import SessionLocal
 
 def get_db() -> Generator:

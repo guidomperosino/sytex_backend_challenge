@@ -6,13 +6,16 @@ class Option(BaseModel):
     label: str = Field(...)
     value: str =  Field (...)
 
+
 class BaseItem(BaseModel):
     index: str = Field(...)
     type: str = Field(...)
 
+
 class Entry(BaseItem):
     input_type: int = Field(...)
     label: str = Field(...)
+
 
 class Group(BaseItem):
     name:str = Field(...)
@@ -20,7 +23,7 @@ class Group(BaseItem):
 
 class TextInputEntry(Entry):
     
-    # Validate input_type = 1 => TexttEntry.
+    # Validate input_type = 1 => Text Entry.
     @validator("input_type")
     def type_validation(cls, input_type):
         if input_type != 1:
@@ -55,18 +58,12 @@ class YesNoEntry(Entry):
             raise ValueError("Not a Yes/No Entry")
         return input_type
 
+
+# Used for create Form Templates
 class FormTemplate(BaseModel):
     name: str = Field(...)
     description: str =  Field (...)
     content : list[Union[Group,TextInputEntry,OptionsEntry,YesNoEntry]] = Field(...)
-
-
-class FormTemplateDB(FormTemplate):
-    id: str
-    created_at: datetime
-    content : list
-    class Config:
-        orm_mode = True
 
 
 class OptionOut(BaseModel):
@@ -79,52 +76,6 @@ class OptionOut(BaseModel):
     class Config:
         orm_mode = True
 
-class FormGroupOut(BaseModel):
-    id: str
-    index: str
-    type: str
-    name: str
-    is_active: bool
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
-class FormOptionsEntryOut(BaseModel):
-    id: str
-    index: str
-    type: str
-    label: str
-    input_type: int
-    is_active: bool
-    created_at: datetime
-    options: list[OptionOut]
-
-    class Config:
-        orm_mode = True
-
-class FormTextEntryOut(BaseModel):
-    id: str
-    index: str
-    type: str
-    label: str
-    input_type: int
-    is_active: bool
-    created_at: datetime
-        
-    class Config:
-        orm_mode = True
-
-class FormYesNoEntryOut(BaseModel):
-    id: str
-    index: str
-    type: str
-    label: str
-    input_type: int
-    is_active: bool
-    created_at: datetime
-
-    class Config:
-        orm_mode = True
 
 class FormItemOut(BaseModel):
     id: str
@@ -145,6 +96,8 @@ class FormItemOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
 class FormTemplateOut(BaseModel):
     id: str
     name: str
@@ -156,9 +109,11 @@ class FormTemplateOut(BaseModel):
     class Config:
         orm_mode = True
 
+
 class FormAnswer(BaseModel):
     form_item_id:str
     answer: Union[str,int, bool]
+
 
 class FormInstance(BaseModel):
     form_template_id : str
@@ -171,15 +126,8 @@ class FormInstance(BaseModel):
             raise ValueError("Coordinates are out of range")
         return coordinates
 
-class FormInstanceOut(BaseModel):
-    id: str
-    form_template_id: str
-    coordinates: str
-    form_template: FormTemplateOut
-    answers: list
 
-
-class FormResponse2DB(BaseModel):
+class FormResponseOut(BaseModel):
     id : str
     index : str
     type : str
@@ -196,12 +144,12 @@ class FormResponse2DB(BaseModel):
         orm_mode=True
 
 
-class FormInstance2DB(BaseModel):
+class FormInstanceOut(BaseModel):
     id:str
     form_template_id:str
     coordinates: str
     created_at: datetime
-    responses: list[FormResponse2DB]
+    responses: list[FormResponseOut]
 
     class Config:
         orm_mode=True

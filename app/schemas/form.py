@@ -76,6 +76,9 @@ class OptionOut(BaseModel):
     is_active: bool
     created_at: datetime
 
+    class Config:
+        orm_mode = True
+
 class FormGroupOut(BaseModel):
     id: str
     index: str
@@ -84,6 +87,8 @@ class FormGroupOut(BaseModel):
     is_active: bool
     created_at: datetime
 
+    class Config:
+        orm_mode = True
 class FormOptionsEntryOut(BaseModel):
     id: str
     index: str
@@ -94,6 +99,9 @@ class FormOptionsEntryOut(BaseModel):
     created_at: datetime
     options: list[OptionOut]
 
+    class Config:
+        orm_mode = True
+
 class FormTextEntryOut(BaseModel):
     id: str
     index: str
@@ -102,6 +110,9 @@ class FormTextEntryOut(BaseModel):
     input_type: int
     is_active: bool
     created_at: datetime
+        
+    class Config:
+        orm_mode = True
 
 class FormYesNoEntryOut(BaseModel):
     id: str
@@ -111,13 +122,39 @@ class FormYesNoEntryOut(BaseModel):
     input_type: int
     is_active: bool
     created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+class FormItemOut(BaseModel):
+    id: str
+    index: str
+    type: str
+    name: Optional[str]
+    label: Optional[str]
+    input_type: Optional[int]
+    is_active: bool
+    created_at: datetime
+    options: Optional[list[OptionOut]] = None
+
+    @validator("options")
+    def empty_list_validation(cls,options):
+        if len(options)==0:
+            return None
+        return options
+
+    class Config:
+        orm_mode = True
 class FormTemplateOut(BaseModel):
     id: str
     name: str
     description: str
     is_active: bool
     created_at: datetime
-    content: list[Union[FormGroupOut,FormOptionsEntryOut,FormTextEntryOut,FormYesNoEntryOut]]
+    content: list[FormItemOut]
+
+    class Config:
+        orm_mode = True
 
 class FormAnswer(BaseModel):
     form_item_id:str
@@ -140,3 +177,31 @@ class FormInstanceOut(BaseModel):
     coordinates: str
     form_template: FormTemplateOut
     answers: list
+
+
+class FormResponse2DB(BaseModel):
+    id : str
+    index : str
+    type : str
+    name : Optional[str]
+    label : Optional[str]
+    input_type : Optional[int]
+    answer : Optional[str]
+    is_active : bool
+    created_at : datetime
+    form_instance_id : str
+    form_item_id : str
+
+    class Config:
+        orm_mode=True
+
+
+class FormInstance2DB(BaseModel):
+    id:str
+    form_template_id:str
+    coordinates: str
+    created_at: datetime
+    responses: list[FormResponse2DB]
+
+    class Config:
+        orm_mode=True

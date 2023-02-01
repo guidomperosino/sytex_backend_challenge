@@ -28,7 +28,7 @@ def get_by_id(
     return db_form_template
 
 
-@router.get("", response_model=list[schemas.FormTemplateOut])
+@router.get("", response_model=list[schemas.FormTemplateOut], response_model_exclude_none=True)
 def get_all(
     skip: int = 0, 
     limit: int = 100,

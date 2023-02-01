@@ -1,0 +1,21 @@
+{
+    "form_template_id": "93d2f88d-d01b-4937-812d-67c31d496d37",
+    "coordinates": [
+      "23.542341",
+      "40.123153"
+    ],
+    "answers": [
+      {
+        "form_item_id": "30abf6c5-5fec-427b-9161-dda2a339e450",
+        "answer": "Predio IV"
+      },
+      {
+        "form_item_id": "834017da-167e-460d-a911-7efda6790885",
+        "answer": "rooftop"
+      },
+      {
+        "form_item_id": "7d198c16-267e-4009-8310-2262a85748b3",
+        "answer": true
+      }
+    ]
+  }

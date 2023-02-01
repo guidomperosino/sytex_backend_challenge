@@ -32,7 +32,6 @@ class FormItem(Base):
     form_responses = relationship("FormResponse", back_populates="questions")
 
 
-
 class EntryOption(Base):
     __tablename__ = "entry_options"
 
@@ -56,6 +55,7 @@ class FormInstance(Base):
     answers = relationship("FormResponse")
     form_template = relationship("FormTemplate")
 
+
 class FormResponse(Base):
     __tablename__ = "form_responses"
 
@@ -66,3 +66,31 @@ class FormResponse(Base):
     
     form_instance = relationship("FormInstance", back_populates="answers")
     questions = relationship("FormItem", back_populates="form_responses")
+
+
+class FormInstance2(Base):
+    __tablename__ = "form_instances_2"
+
+    id = Column(String(36), primary_key=True, default=generate_id ,index=True)
+    form_template_id = Column(String(36),ForeignKey("form_templates.id"))
+    coordinates = Column(String(50))
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=generate_datetime)
+    
+    responses = relationship("FormResponse2", order_by="FormResponse2.index")
+
+
+class FormResponse2(Base):
+    __tablename__ = "form_responses_2"
+    
+    id = Column(String(36), primary_key=True, default=generate_id ,index=True)
+    index = Column(String(15))
+    type = Column(String(30))
+    name = Column(String(250))
+    label = Column(String(250))
+    input_type = Column(Integer)
+    answer = Column(String(250))
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=generate_datetime)
+    form_instance_id = Column(String(36), ForeignKey("form_instances_2.id"))
+    form_item_id = Column(String(36), ForeignKey("form_items.id"))

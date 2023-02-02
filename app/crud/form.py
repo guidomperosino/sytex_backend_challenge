@@ -93,3 +93,8 @@ def create_form_instance(
 def get_form_instances(db: Session, skip=0, limit=100):
     query = db.query(models.FormInstance)
     return query.offset(skip).limit(limit).all()
+
+# Return Form Instance from DB (based on id).
+def get_form_instance_by_id(db: Session, form_instance_id: str): 
+    db_form_instance = db.query(models.FormInstance).filter(models.FormInstance.id == form_instance_id).first()
+    return db_form_instance

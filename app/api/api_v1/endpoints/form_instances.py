@@ -54,3 +54,15 @@ def get_all(
         skip=skip, 
         limit=limit
     )
+
+@router.get("/{form_instance_id}", response_model=schemas.FormInstanceOut, response_model_exclude_none=True)
+def get_by_id(
+    form_instance_id: str, 
+    db: Session = Depends(deps.get_db),
+):
+    db_form_instance = crud.get_form_instance_by_id(db, form_instance_id= form_instance_id)
+    
+    if db_form_instance is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Form instance not found.")
+    
+    return db_form_instance
